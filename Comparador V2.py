@@ -3,7 +3,7 @@ from tkinter import filedialog
 import pandas as pd
 
 def importar_mês_passado():
-    caminho_arquivo = filedialog.askopenfilename(title="Selecione a planilha do mês passado", filetypes=(("Arquivos excel", "*.xlsx"),))
+    caminho_arquivo = filedialog.askopenfilename(title="Selecione a planilha do mês passado", filetypes=(("Arquivos excel", "*.xlsx *.xls"),))
     if caminho_arquivo:
         global df_mês_passado
         df_mês_passado = pd.read_excel(caminho_arquivo, usecols="C:E", skiprows=4)
@@ -12,7 +12,7 @@ def importar_mês_passado():
 
 
 def importar_mês_atual():
-    caminho_arquivo = filedialog.askopenfilename(title="Selecione a planilha do mês atual", filetypes=(("Arquivos excel", "*.xlsx"),))
+    caminho_arquivo = filedialog.askopenfilename(title="Selecione a planilha do mês atual", filetypes=(("Arquivos excel", "*.xlsx *.xls"),))
     if caminho_arquivo:
         global df_mês_atual
         df_mês_atual =pd.read_excel(caminho_arquivo, usecols="C:E", skiprows=4)
