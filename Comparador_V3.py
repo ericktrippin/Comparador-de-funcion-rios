@@ -5,10 +5,13 @@ import pandas as pd
 
 def importar_mês_passado():
     caminho_arquivo = filedialog.askopenfilename(
-        parent=janela,title="Selecione a planilha do mês passado", filetypes=(("Arquivos excel", "*.xlsx *.xls"),))
+        parent=janela,title="Selecione a planilha do mês passado", filetypes=(("Arquivos", "*.csv"),))
     if caminho_arquivo:
         global df_mês_passado
-        df_mês_passado = pd.read_excel(caminho_arquivo, usecols="C:E", skiprows=4)
+        df_mês_passado = pd.read_csv(caminho_arquivo,
+        usecols=['R.E'],
+        encoding='latin1',
+        sep=';')
         print(f'planilha do mês passado selecionada:\n{df_mês_passado.head()}')
         tree.insert("",'end', values=('Planilha do mês passado carregada',"",""))
 
@@ -23,8 +26,8 @@ def importar_mês_atual():
         comparar_funcionarios()
 
 def comparar_funcionarios():
-    rg_mês_atual = df_mês_atual.iloc[:, 2]
-    rg_mês_passado = df_mês_passado.iloc[:, 2]
+    rg_mês_atual = df_mês_atual.iloc[:, 2].astype(str)
+    rg_mês_passado = df_mês_passado.iloc[:, 0].astype(str)
     funcionarios_novos = df_mês_atual[~rg_mês_atual.isin(rg_mês_passado)]
 
     print(f'Funcionários contratados recentemente:\n{funcionarios_novos}')
