@@ -12,6 +12,7 @@ def importar_mês_passado():
         usecols=['R.E'],
         encoding='latin1',
         sep=';')
+        df_mês_passado['R.E'] = df_mês_passado['R.E'].astype(str).str.replace(r'^="|"$',"", regex=True)
         print(f'planilha do mês passado selecionada:\n{df_mês_passado.head()}')
         tree.insert("",'end', values=('Planilha do mês passado carregada',"",""))
 
@@ -26,9 +27,9 @@ def importar_mês_atual():
         comparar_funcionarios()
 
 def comparar_funcionarios():
-    rg_mês_atual = df_mês_atual.iloc[:, 2].astype(str)
-    rg_mês_passado = df_mês_passado.iloc[:, 0].astype(str)
-    funcionarios_novos = df_mês_atual[~rg_mês_atual.isin(rg_mês_passado)]
+    rg_mês_atual = df_mês_atual.iloc[:, 2].astype(str).str.replace(r'\.0$', '', regex=True)
+    rg_mês_passado = df_mês_passado.iloc[:, 0].astype(str).str.strip()
+    funcionarios_novos = df_mês_atual[~rg_mês_atual.isin(rg_mês_passado)].dropna(axis='rows',inplace=False)
 
     print(f'Funcionários contratados recentemente:\n{funcionarios_novos}')
     atualizar_tabela    (funcionarios_novos)
